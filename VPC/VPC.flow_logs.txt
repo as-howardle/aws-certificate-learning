@@ -1,0 +1,7 @@
+VPC Flow Logs monitor the in-and-out traffice of your Network Interfaces within your VPC.
+You can turn on Flow Logs at the VPC, Subnet or Network Interface level.
+VPC Flow Logs cannot be tagged like other AWS resources.
+You cannot change the configuration of a flow log after it's created.
+You cannot enable flow logs for VPCs which a peered with your VPC unless it is in the same account.
+VPC Flow Logs can be delivered to an S3 or CloudWatch Logs.
+VPC Flow Logs contains the source and destincation IP addresses.

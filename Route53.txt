@@ -1,0 +1,17 @@
+- Route53 is a DNS provider, register and manage domains, create record sets
+
+**** Policy ****
+- Simple routing: default routing poolicy, multiple addresses and result in a random endpoint selection
+- Weighted routing: split up traffice based on different 'weights' assigned
+- Latency-Based routing: directs traffic based on region, for lowest possible latency for users
+- Failover routing: primary site in one location, secondary data recovery in another (change on health check)
+- Geolocation routing: route traffic based on the geographic location of requests origin
+- Geo-proximity routing: route traffic based on geographic location using 'Bias' values (needs Route53 traffic flow)
+- Multi-value answer routing: return multiple values in response to DNS queries (using health check)
+
+
+**** DNS record type ****
+- A: DNS map domain to IPv4
+- AAAA: DNS map domain to IPv6
+- CNAME: DNS map hostname to another domain
+- NS: name servers for hosted zone (place who managed traffic to the domain)
