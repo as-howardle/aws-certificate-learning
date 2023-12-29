@@ -139,7 +139,7 @@ Aurora Machine Learning
   - Amazon SageMaker (use with any ML model)
   - Amazon Comprehend (for sentiment analysis)
 - You don't need to have ML experience
-- Use cases: fraud detection, ads targeting, sentiment analysis, product recommendatations
+- Use cases: fraud detection, ads targeting, sentiment analysis, product recommendations
 
 RDS backups
 - Automated backups:
@@ -203,7 +203,7 @@ Amazon RDS Proxy
 - Supports RDS (MySQL, PostgreSQL, MariaDB, MS SQL Server) and Aurora (MySQL, PostgreSQL)
 - No code changes required for most apps
 - Enforce IAM Authentication for DB, and securely store credentials in AWS Secrets Manager
-- RDS Proxy is nerver publicly acccessible (must be accessed from VPC)
+- RDS Proxy is never publicly accessible (must be accessed from VPC)
 
 Amazon ElastiCache Overview
 - The same way RDS is to get managed Relational Databases

@@ -63,7 +63,7 @@ Why use an Elastic Load Balancer
 
 Health checks
 * Health Checks are crucial for Load Balancers
-* The enable the load balancer to know if instances it forwards traffic to are available to reply to requests
+* They enable the load balancer to know if instances it forwards traffic to are available to reply to requests
 * The health check is done on a port and a route (/health is common)
 * If the response is not 200 (OK), then the instance is unhealthy
 
@@ -155,7 +155,7 @@ Cross-Zone Load balancing
   * You pay charges for inter AZ data if enabled
 * Classic Load Balancer
   * Disabled by default
-  * No charges for inter AZ data in enabled
+  * No charges for inter AZ data if enabled
 
 SSL/TLS - Basics
 * An SSL Certificate allows traffic between your clients and your load balancer to be encrypted in transit (in-flight encryption)
