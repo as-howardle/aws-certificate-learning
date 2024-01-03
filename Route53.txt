@@ -67,3 +67,118 @@ CNAME vs Alias
   - Works for ROOT DOMAIN and NON ROOT DOMAIN
   - Free of charge
   - Native health check
+
+Alias records
+- Maps a hostname to an AWS resource
+- An extension to DNS functionality
+- Automatically recognizes changes in the resources's IP addresses
+- Unlinke CNAME, it can be used for the top node of a DNS namespace (Zone Apex), eg: example.com
+- Alias Record is always of type A/AAAA for AWS resources (IPv4/IPv6)
+- You can't set the TTL
+
+Alias records targets
+- Elastic Load Balancers
+- Cloudfront distributions
+- API Gateway
+- Elastic Beanstalk environments
+- S3 websites
+- VPC Interface Endpoints
+- Global Accelerator accelerator
+- Route 53 record in the same hosted zone
+- You cannot set an ALIAS record for an EC2 DNS name
+
+Routing Policies
+- Define how Route 53 responds to DNS queries
+- Don't get confused by the word "Routing"
+  - It's not the same as Load balancer routing which routes the traffic
+  - DNS does not route any traffic, it only responds to the DNS queries
+- Route 53 supports the following Routing Policies
+  - Simple
+  - Weighted
+  - Failover
+  - Latency based
+  - Geolocation
+  - Multi-Value answer
+  - Geoproximity (using Route 53 Traffic Flow feature)
+
+Routing policies - Simple
+- Typically, route traffic to a single resource
+- Can specify multiple values in the same record
+- If multiple values are returned, a random one is chosen by the client
+- When Alias is enabled, specify only one AWS resources
+- Can't be associated with Health Check
+
+Routing policies - Weighted
+- Control the % of the requests that go to each specific resource
+- Assign each record a relative weight:
+  - traffic (%) = weight for a specific record / sum of all the weights for all records
+- DNS records must have the same name and type
+- Can be associated with Health Checks
+- Use cases: load balancing between regions, testing new application versions, ...
+- Assign a weight of 0 to a record to stop sending traffic to a resource
+- If all records have weight of 0, then all records will be returned equally
+
+Routing policies - Latency-based
+- Redirect to the resource that has the least latency close to us
+- Super helpful when latency for users is a priority
+- Latency is based on traffic between users and AWS Regions
+- Germany users may be redirected to the US (if that's the lowest letency)
+- Can be associated with Health Check (has a failover capability)
+
+Health Checks
+- HTTP Health Checks are only for public resources
+- Health Check => Automated DNS Failover:
+  - Health checks that monitor an endpoint (application, server, other AWS resources)
+  - Health checks that monitor other health checks (Calculated Health Checks)
+  - Health checks that monitor CloudWatch Alarms (full control !!!) - eg. throttles of DynamoDB, alarms on RDS, custom metrics,...
+- Health Checks are intergrated with CW metrics
+
+Calculated Health Checks
+- Combine the results of multiple Health Checks into a single Health Check
+- You can use OR, AND, or NOT
+- Can monitor up to 256 Child Health Checks
+- Specify how many of the health checks need to pass to make the parent pass
+- Usage: perform maintenance to your website without causing all health checks to fail
+
+Health Checks - Private Hosted Zone
+- Route 53 health checkers are outside the VPC
+- They can't access private endpoints (private VPC or on-premise resource)
+- You can create a CloudWatch Metric and associate CloudWatch Alarm, then create a Health Check that checks the alarm itself
+
+Routing policies - Failover
+- We have 2 routes. One for the Primary Instance, the other for the Secondary - Diasaster Recovery Instance.
+- Health check is mandatory for the primary route
+- When the Primary Instance is down. Route 53 auto switch to the Secondary Instance
+
+Routing policies - Geolocation
+- Different from Latency-based
+- This routing is based on user location
+- Specify location by Continent, Country or by US State (if there's overlapping, most precise location selected)
+- Should create a "Default" record (in case there's no match on location)
+- Use cases: website localization, restrict content distribution, load balancing, ...
+- Can be associated with Health Checks
+
+Routing policies - Geoproximity
+- Route traffic to your resources based on the geographic location of users and resources
+- Ability to shift more traffic to resources based on the defined bias
+- To change the size of the geographic region, specify bias values:
+  - To expand (1 to 99) - more traffic to the resource
+  - To shrink (-1 to -99) - less traffic to the resource
+- Resources can be:
+  - AWS resources (speficy AWS region)
+  - Non-AWS resources (specify Latitude and Longitude)
+- You must use Route 53 Traffic Flow to use this feature
+
+Routing policies - IP-based Routing
+- Routing is based on clients'IP addresses
+- You provide a list of CIDRs for your clients and the corresponding endpoints/locations (user-IP-to-endpoint mappings)
+- Use cases: Optimize performance, reduce network costs,...
+- Example: route end users from a particular ISP to a specific endpoint
+
+Rounting policies - Multi-Value
+- Use when routing traffic to multiple resources
+- Route 53 return multiple values/resources
+- Can be associated with Health Checks (return only values for healthy resources)
+- Up to 8 healthy records are returned for each Multi-Value query
+- Multi-Value is not a substitute for having an ELB
+
