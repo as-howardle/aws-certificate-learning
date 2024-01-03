@@ -1,0 +1,69 @@
+What is DNS?
+- Domain Name System which translates the human friendly hostnames into the machine IP Addresses
+- DNS is the backbone of the Internet
+- DNS uses hierarchical naming structure
+
+DNS Terminologies
+- Domain Registrar: Amazon Route53, GoDaddy,...
+- DNS Records: A, AAAA, CNAME, NS, ...
+- Zone File: contains DNS Records
+- Name Server: resolves DNS queries (Authoritative or Non-Authoritative)
+- Top Level Domain (TLD): .com, .us, .in, ....
+- Second Level Domain (SLD): amazon.com, google.com, ...
+
+Amazon Route 53
+- A highly available, scalable, fully managed and Authoritative DNS
+  - Authoritative = the customer (you ) can update the DNS Records
+- Route 53 is also a Domain Registrar 
+- Ability to check the health of your resources
+- The only AWS service which provides 100% availability SLA
+- Why Route 53? 53 is a reference to the traditional DNS port
+
+Records
+- How you want to route traffice for a domain
+- Each record contains:
+  - Domain/subdomain Name - eg. example.com
+  - Record Type - eg. A or AAAA,...
+  - Value - eg. 12.34.56.78
+  - Routing Policy - how Route 53 responds to queries
+  - TTL - amount of time the record cached at DNS queries
+- Route 53 supports the following DNS record types:
+  - (must know) A/AAAA/CNAME/NS
+  - (advanced) CAA/DS/MX/NAPTR/PTR/SOA/TXT/SPF/SRV
+
+Record Types
+- A - maps a hostname to IPv4
+- AAAA - maps a hostname to IPv6
+- CNAME - maps a hostname to another hostname
+  - The target is a domain name which must have an A or AAAA record 
+  - Can't create a CNAME record for the top node of a DNS namespace (Zone Apex)
+  - Example: you can't create for example.com, but you can create for www.example.com
+- NS - Name Servers for the Hosted Zone
+ - Control how traffic is routed for a domain
+
+Hosted zones
+- A container for records that define how to route traffic to a domain and its subdomains
+- Public Hosted Zones - contains records that specify how to route traffice on the Internet (public domain names)
+- Private Hosted Zones - containes records that specify how you route traffic within one or more VPCs (private domain names)
+- You pay $0.5 per month per hosted zone
+
+Records TTL
+- High TTL:
+  - Less traffic on Route 53
+  - Possibly outdated records
+- Low TTL:
+  - More traffic on Route 53
+  - Records are outdated for less time
+  - Easy to change records
+- Except for Alias records, TTL is mandatory for each DNS record
+
+CNAME vs Alias
+- AWS Resources (Load Balancer, CloudFront) expose an AWS hostname:
+- CNAME:
+  - Points a hostname to any other hostname
+  - ONLY FOR NON ROOT DOMAIN
+- Alias:
+  - Points a hostname to an AWS resources
+  - Works for ROOT DOMAIN and NON ROOT DOMAIN
+  - Free of charge
+  - Native health check
